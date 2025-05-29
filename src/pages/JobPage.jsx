@@ -1,14 +1,26 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { NavLink } from 'react-router-dom';
 import { IoAddCircleOutline } from 'react-icons/io5';
 
-const JobPage = () => {
+const JobPage = ( {deleteJob} ) => {
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [job, setJob] = useState([]);
+    
+    const navigate = useNavigate();
+
+    const onDeleteClick = (jobId) => {
+        const confirm = window.confirm("Are you sure you want to delete the job?");
+
+        if (!confirm) return;
+
+        deleteJob(jobId);
+
+        navigate('/jobs');
+    }
     
   
   /**
@@ -37,7 +49,7 @@ const JobPage = () => {
 
 
   return loading ? <Spinner /> : 
-        <>
+    <>
         <section>
             <div className="container m-auto py-6 px-6">
                 <NavLink
@@ -77,48 +89,41 @@ const JobPage = () => {
 
                             <p className="mb-4">{job.salary} / Year</p>
                         </div>
-
-
-                        <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-                            <h3 className="text-xl font-bold mb-6">Manage Job</h3>
-                            <NavLink
-                                to="/add-job.html"
-                                className="bg-indigo-500 hover:bg-indigo-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
-                                >Edit Job</NavLink>
-                            <button
-                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"> Delete Job
-                            </button>
-                        </div>
-
                     </main>
 
                     <aside>
-                        <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="bg-white p-2 rounded-lg shadow-md">
                             <h3 className="text-xl font-bold mb-6">Company Info</h3>
 
                             <h2 className="text-2xl">NewTek Solutions</h2>
-
-                            <p className="my-2">
-                                NewTek Solutions is a leading technology company specializing in web development and digital solutions. We pride ourselves on delivering high-quality products and services to our clients while fostering a collaborative and innovative work environment.
-                            </p>
 
                             <hr className="my-4" />
 
                             <h3 className="text-xl">Contact Email:</h3>
 
-                            <p className="my-2 bg-indigo-100 p-2 font-bold">
+                            <p className="my-2 bg-indigo-100 font-bold">
                                 contact@newteksolutions.com
                             </p>
 
-                            <h3 className="text-xl">Contact Phone:</h3>
-
                             <p className="my-2 bg-indigo-100 p-2 font-bold">555-555-5555</p>
                         </div>
+
+                        <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+                            <h3 className="text-xl font-bold">Manage Job</h3>
+                            <NavLink
+                                to="/add-job.html"
+                                className="bg-indigo-500 hover:bg-indigo-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
+                                >Edit Job</NavLink>
+                            <button
+                                onClick={ () => onDeleteClick(job.id) }
+                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"> Delete Job
+                            </button>
+                        </div>
                     </aside>
+
                 </div>
             </div>
         </section>
-
     </>
 
 }
