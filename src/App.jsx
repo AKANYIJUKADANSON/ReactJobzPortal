@@ -1,4 +1,4 @@
-import React from 'react'
+import {React} from 'react'
 import './index.css'
 
 // routing for pages
@@ -9,6 +9,7 @@ import {
   RouterProvider 
 } from 'react-router-dom'
 
+import LoginPage from './pages/LoginPage';
 import MainLayout from './layouts/MainLayout';
 import HomePage from './pages/HomePage';
 import JobsPage from './pages/JobsPage';
@@ -16,6 +17,7 @@ import PageNotFound from './pages/PageNotFound';
 import JobPage from './pages/JobPage';
 import AddJobPage from './pages/AddJobPage';
 import TabularTable from './components/TabularTable';
+import Logout from './pages/Logout';
 
 
 const App = ()=> {
@@ -24,7 +26,7 @@ const App = ()=> {
   const addNewJob = async (newJob) => {
 
     // adding the job
-    await fetch('http://localhost:8080/jobs/add-job', {
+    await fetch('/api/jobs/add-job', {
       method: 'POST',
       headers: {
         'content-type' : 'application/json'
@@ -36,7 +38,6 @@ const App = ()=> {
     
     return;
   };
-
   // Delete a job
   const deleteJob = async (id) => {
 
@@ -51,14 +52,19 @@ const App = ()=> {
   const router = createBrowserRouter(
     createRoutesFromElements( 
       <>
-        <Route path='/' element={ <MainLayout /> }>
-          <Route index element={<HomePage />} />
-          <Route path='/jobs' element={<JobsPage />} />
-          <Route path='/add-job' element={<AddJobPage addJobSubmit = {addNewJob} />} />
-          <Route path='/add-job' element={<AddJobPage />} />
-          <Route path='/jobs/:id' element={<JobPage deleteJob = {deleteJob} />} />
-          <Route path='/jobs-tabular' element={<TabularTable />} />
-        </Route>  
+        <Route index element={<LoginPage />} />
+        <Route path='/logout' element={<Logout />} />
+
+          <Route path='/' element={ <MainLayout /> }>
+            <Route path='/home' element={<HomePage />} />
+            <Route path='/jobs' element={<JobsPage />} />
+            <Route path='/add-job' element={<AddJobPage addJobSubmit = {addNewJob} />} />
+            <Route path='/add-job' element={<AddJobPage />} />
+            <Route path='/jobs/:id' element={<JobPage deleteJob = {deleteJob} />} />
+            <Route path='/jobs-tabular' element={<TabularTable />} />
+          </Route> 
+
+        {/* Page Not Found */} 
 
         <Route path='*' element={<PageNotFound />} />
       </>
