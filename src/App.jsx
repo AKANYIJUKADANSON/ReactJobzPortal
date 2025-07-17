@@ -18,6 +18,7 @@ import JobPage from './pages/JobPage';
 import AddJobPage from './pages/AddJobPage';
 import TabularTable from './components/TabularTable';
 import Logout from './pages/Logout';
+import FilesPage from './pages/FilesPage'
 
 
 const App = ()=> {
@@ -62,6 +63,7 @@ const App = ()=> {
             <Route path='/add-job' element={<AddJobPage />} />
             <Route path='/jobs/:id' element={<JobPage deleteJob = {deleteJob} />} />
             <Route path='/jobs-tabular' element={<TabularTable />} />
+            <Route path='/files' element={<FilesPage />} />
           </Route> 
 
         {/* Page Not Found */} 
